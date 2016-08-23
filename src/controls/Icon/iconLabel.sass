@@ -1,0 +1,20 @@
+$color: rgba(255, 255, 255, 0.3)
+$colorHover: rgba(255, 255, 255, 1)
+
+.iconLabel
+  display: inline-block
+  align-items: center
+  border: 2px solid $color
+  border-radius: 4px
+  width: 2rem
+  height: 2rem
+  margin: 6px
+  cursor: pointer
+  transition: all ease-out 0.25s
+  .icon
+    fill: $color
+    transition: all ease-out 0.25s
+  &:hover
+    border: 2px solid $colorHover
+    .icon
+      fill: $colorHover

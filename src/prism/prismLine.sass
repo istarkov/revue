@@ -1,0 +1,45 @@
+// highlited code
+.opaque
+  // no need to use shadow for non highlited texts
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3)
+
+// non highlited code
+.transparent
+  opacity: 0.3
+
+.header
+  opacity: 0.3
+  &:hover
+    opacity: 0.6
+
+// use data selector to prevent copy-paste line numbers
+[data-line-number]::before
+  width: 2.5em
+  display: inline-block
+  text-align: right
+  margin-right: 1em
+  color: #999
+  content: attr(data-line-number)
+
+.fileHeader
+  left: 0em
+  top: 0
+  right: 0
+  bottom: 0
+  position: absolute
+  border-top: 1px solid rgba(255,255,255,0.9)
+  background-color: rgba(255, 255, 255, 0.5)
+  font-weight: bold
+  display: flex
+  justify-content: center
+  align-items: center
+
+
+.fileHeaderError
+  background-color: rgba(255, 0, 0, 0.5)
+  border-top: 1px solid rgba(255,0,0,0.9)
+
+.fileHeaderLink
+  color: white
+  font-size: 0.8em
+  text-decoration: none

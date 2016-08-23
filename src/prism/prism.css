@@ -1,0 +1,37 @@
+
+.base {
+  background: none;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.code {
+  composes: base;
+}
+
+.pre {
+  composes: base;
+  padding: 1em;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  margin: .5em 0;
+  overflow: auto;
+  border-radius: 0.3em;
+  width: 100%;
+  height: 100%;
+}

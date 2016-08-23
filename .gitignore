@@ -1,0 +1,7 @@
+/build/*
+!/build/index.html
+/node_modules
+/config/nginx
+/config/nginx_ssl
+npm-debug.log
+/config/nginx/nginx.conf

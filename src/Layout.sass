@@ -1,0 +1,56 @@
+.layout
+  display: flex
+  height: 100vh
+  position: relative
+
+.editButton
+  position: absolute
+  left: 0
+  top: 0
+  z-index: 10
+
+.octocatButton
+  position: absolute
+  right: 0
+  bottom: 0
+  z-index: 10
+
+.iconLabel
+  border: 0
+
+.side
+  display: flex
+  flex: 19
+
+.main
+  flex: 62
+  display: flex
+  // width: 60%
+
+.editor
+  flex: 62
+  display: flex
+  overflow-x: scroll
+
+// @media only screen and (max-width: 900px)
+// @media only screen and (max-width: 900px)
+
+@media only screen and (max-width: 900px)
+  .side
+    flex: 0
+  .editButton
+    top: 20px
+    right: 0
+    left: auto
+  .octocatButton
+    display: none
+
+@media only screen and (max-device-width: 900px)
+  .side
+    flex: 0
+  .editButton
+    top: 20px
+    right: 0
+    left: auto
+  .octocatButton
+    display: none

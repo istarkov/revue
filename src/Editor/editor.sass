@@ -1,0 +1,39 @@
+.main
+  flex: 1
+  visibility: hidden
+  position: relative
+
+.editor
+  font-size: 12px
+  height: 100%
+
+.buttonsPanel
+  position: absolute
+  bottom: 20px
+  left: 0
+  right: 0
+  display: flex
+  justify-content: center
+  align-items: center
+
+.saveButton
+  margin: 0 auto 20px auto
+
+.selectedLine
+  background-color: rgba(255,255,255,0.1)
+  border-top: 1px solid rgba(255,255,255,0.2)
+  border-bottom: 1px solid rgba(0,0,0,0.3)
+
+// Links are too long, so I made them shorter
+.selectedTextLine
+  letter-spacing: -1px
+
+// fonts fallback
+:global(.wf-active)
+  .main
+    visibility: visible
+
+// Use fallback font if not loaded
+:global(.wf-inactive)
+  .main
+    visibility: visible

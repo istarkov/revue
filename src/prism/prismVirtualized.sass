@@ -1,0 +1,48 @@
+.hideScrollbarPrent
+  overflow: hidden
+
+.code
+  background: none
+  // text-shadow: 0 1px rgba(0, 0, 0, 0.3)
+  font-family: 'Roboto mono', monospace
+  text-align: left
+  white-space: pre
+  word-spacing: normal
+  word-break: normal
+  word-wrap: normal
+  line-height: 1.5
+  -moz-tab-size: 4
+  -o-tab-size: 4
+  tab-size: 4
+  -webkit-hyphens: none
+  -moz-hyphens: none
+  -ms-hyphens: none
+  hyphens: none
+  margin: 0
+  margin-top: 0
+  visibility: hidden
+
+:global(.wf-active)
+  .code
+    visibility: visible
+
+// Use fallback font if not loaded
+:global(.wf-inactive)
+  .code
+    visibility: visible
+
+.main
+  composes: hideScrollbarPrent
+  flex: 1
+  // contain: strict
+  // not sure this gives anything
+  // :global(.Grid__cell)
+  //   contain: strict
+
+.pre
+  composes: code
+  composes: hideScrollbarPrent
+  position: relative
+
+.virtualScroll
+  outline: 0
