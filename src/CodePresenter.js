@@ -42,7 +42,8 @@ export const codePresenter = ({
             <PrismVirtualized
               scrollTop={
                 currentStyle && currentStyle.style
-                  ? currentStyle.style.scrollTop // Math.round(currentStyle.style.scrollTop)
+                  // Math.round until https://github.com/bvaughn/react-virtualized/issues/357
+                  ? Math.round(currentStyle.style.scrollTop)
                   : scrollParams === undefined
                     ? 0
                     : scrollParams.scrollTop
