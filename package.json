@@ -60,7 +60,7 @@
     "node-uuid": "^1.4.7",
     "path-to-regexp": "^1.5.3",
     "prismjs": "^1.5.1",
-    "raf": "^3.2.0",
+    "raf": "^3.3.0",
     "react": "^15.2.0",
     "react-addons-shallow-compare": "^15.2.0",
     "react-css-themr": "^1.2.0",
