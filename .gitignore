@@ -1,5 +1,4 @@
-/build/*
-!/build/index.html
+/build
 /node_modules
 /config/nginx
 /config/nginx_ssl

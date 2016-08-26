@@ -14,6 +14,7 @@
     "test:src": "mocha --compilers js:babel-register './src/**/*.spec.js'",
     "test:watch": "mocha --compilers js:babel-register --reporter min --watch './src/**/*.spec.js'",
     "test": "npm run lint && npm run test:src",
+    "prepublish": "./config/codemod/fixReactVirtualizedGrid.sh",
     "flow": "flow; test $? -eq 0 -o $? -eq 2",
     "docker-nginx-start": "docker run -p80:80 -p443:443 --name nginx-for-github -d 'nginx-github'",
     "docker-nginx-stop": "docker rm -f nginx-for-github"
