@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import defaultProps from 'recompose/defaultProps';
 import withPropsOnChange from 'recompose/withPropsOnChange';
-import saveButtonStyles from './saveButton.sass';
+import saveButtonStyles from './button.sass';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import { Motion, spring } from 'react-motion';
@@ -10,19 +10,20 @@ import Observable from '../utils/rxjs';
 import mapPropsStream from 'recompose/mapPropsStream';
 // import shallowEqual from 'fbjs/lib/shallowEqual';
 import setObservableConfig from 'recompose/setObservableConfig';
+import { themr } from 'react-css-themr';
 
 setObservableConfig({
   fromESObservable: Observable.from,
 });
 
 
-export const saveButton = ({
-  styles, motionStyle, onRest,
+export const button = ({
+  theme, motionStyle, onRest,
   onMouseEnter, onMouseLeave,
   onMouseDown, onClick, children,
 }) => (
   <div
-    className={styles.main}
+    className={theme.main}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onMouseDown={onMouseDown}
@@ -35,7 +36,7 @@ export const saveButton = ({
       {
         ({ scale }) => (
           <div
-            className={styles.point}
+            className={theme.point}
             style={{
               transform: `translate3D(0,0,0) scale(${scale}, ${scale})`,
             }}
@@ -50,7 +51,6 @@ export const saveButton = ({
 
 export const saveButtonHOC = compose(
   defaultProps({
-    styles: saveButtonStyles,
     initialScale: 0.6,
     activeScale: 0.9,
     hoveredScale: 1.0,
@@ -60,14 +60,15 @@ export const saveButtonHOC = compose(
     precision: 0.01,
     active: false,
   }),
+  themr('Button', saveButtonStyles),
   withPropsOnChange(
     ['active'],
-    ({ active, styles }) => ({
-      styles: {
-        ...styles,
+    ({ active, theme }) => ({
+      theme: {
+        ...theme,
         main: active
-          ? `${styles.main} ${styles.visible}`
-          : `${styles.main}`,
+          ? `${theme.main} ${theme.visible}`
+          : `${theme.main}`,
       },
     })
   ),
@@ -141,4 +142,4 @@ export const saveButtonHOC = compose(
   )
 );
 
-export default saveButtonHOC(saveButton);
+export default saveButtonHOC(button);

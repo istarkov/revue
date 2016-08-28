@@ -1,20 +1,33 @@
 .main
   flex: 1
   visibility: hidden
-  position: relative
+  // position: relative
+  display: flex
+  flex-direction: column
 
 .editor
   font-size: 12px
-  height: 100%
+  flex: 1
+  position: relative
 
-.buttonsPanel
+.editorHolder
   position: absolute
-  bottom: 20px
   left: 0
   right: 0
+  top: 0
+  bottom: 0
+  overflow: scroll
+  position: absolute
+
+.buttonsPanel
+  // position: absolute
+  // bottom: 20px
+  // left: 0
+  // right: 0
   display: flex
   justify-content: center
   align-items: center
+  margin: 10px
 
 .saveButton
   margin: 0 auto 20px auto
@@ -37,3 +50,6 @@
 :global(.wf-inactive)
   .main
     visibility: visible
+
+.cancelPoint
+  background-color: #535353

@@ -4,14 +4,14 @@ import withState from 'recompose/withState';
 import shallowEqual from 'fbjs/lib/shallowEqual';
 import defaultProps from 'recompose/defaultProps';
 import codeMirror from 'codemirror';
+import Button from './Button';
+
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/monokai.css';
 import './mode/simpleMarkdown';
 
 import editorStyles from './editor.sass';
 import './monokaiExtend.sass';
-
-import SaveButton from './SaveButton';
 
 export class Editor extends Component {
   componentDidMount() {
@@ -125,11 +125,17 @@ export class Editor extends Component {
 
     return (
       <div className={styles.main}>
-        <div className={styles.editor} ref={setRef} />
+        <div className={styles.editor}>
+          <div className={styles.editorHolder} ref={setRef} />
+        </div>
+
         <div className={styles.buttonsPanel}>
-          <SaveButton onClick={onSave} active={hasChanged}>
+          <Button onClick={onSave} active={hasChanged}>
             SAVE
-          </SaveButton>
+          </Button>
+          <Button onClick={onSave} theme={styles} themeNamespace="cancel" active>
+            BACK
+          </Button>
         </div>
       </div>
     );

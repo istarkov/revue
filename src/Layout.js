@@ -2,7 +2,6 @@ import React from 'react';
 import Observable from './utils/rxjs';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import withState from 'recompose/withState';
 import defaultProps from 'recompose/defaultProps';
 import withHandlers from 'recompose/withHandlers';
 import withPropsOnChange from 'recompose/withPropsOnChange';
@@ -124,11 +123,12 @@ export const layoutHOC = compose(
   defaultProps({
     styles: layoutStyles,
   }),
-  withProps(({ params: { page, noteKeys } }) => ({
+  withProps(({ params: { page, noteKeys, editMode } }) => ({
     page: +page,
     noteKeys: noteKeys || '-',
+    editMode: !!editMode,
   })),
-  withState('editMode', 'setEditMode', false),
+  // withState('editMode', 'setEditMode', false),
   // http://localhost:3000/PxRF6e-lala/0
   // curl -X GET 'http://localhost:4000/load/FKLRm2'
   // curl -X GET 'https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyB0ofrDxiagMe2XFecOTF3KcK3MDIQ4ems&shortUrl=http://goo.gl/FKLRm2'
@@ -164,27 +164,28 @@ export const layoutHOC = compose(
     })
   ),
   withHandlers({
-    onEditClick: ({ editMode, setEditMode }) => () => {
-      setEditMode(!editMode);
+    onEditClick: ({ noteKeys, page }) => () => {
+      browserHistory.push(`/${noteKeys}/${page}/e`);
     },
     onOctocatClick: () => () => {
       window.open('https://github.com/istarkov');
     },
-    onPageChange: ({ noteKeys, page }) => (nextPage) => {
+    onPageChange: ({ noteKeys, page, editMode }) => (nextPage) => {
       if (page !== nextPage) {
-        browserHistory.push(`/${noteKeys}/${nextPage}`);
+        browserHistory.push(`/${noteKeys}/${nextPage}${editMode ? '/e' : ''}`);
       }
     },
     onCursorLineChanged: ({ noteKeys, codeNotesParsed, page }) => (line) => {
       // console.log('line', codeNotesParsed, line);
-      const newPage = codeNotesParsed
+      const nextPage = codeNotesParsed
         .findIndex(({ source: { lineFrom, lineTo } }) => lineFrom <= line && line <= lineTo);
-      if (newPage >= 0 && newPage !== page) {
-        browserHistory.push(`/${noteKeys}/${newPage}`);
+      if (nextPage >= 0 && nextPage !== page) {
+        browserHistory.replace(`/${noteKeys}/${nextPage}/e`);
       }
     },
-    onEditorSave: ({ setEditMode }) => () => {
-      setEditMode(false);
+    onEditorSave: ({ noteKeys, page }) => () => {
+      browserHistory.push(`/${noteKeys}/${page}`);
+      // setEditMode(false);
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' http://localhost:4000/save
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyB0ofrDxiagMe2XFecOTF3KcK3MDIQ4ems
 

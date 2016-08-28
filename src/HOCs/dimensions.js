@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import createEagerFactory from 'recompose/createEagerFactory';
 import createHelper from 'recompose/createHelper';
-
+import raf from 'raf';
 // import shallowEqual from 'recompose/shallowEqual';
 
 const dimensions = (
@@ -28,7 +28,7 @@ const dimensions = (
         componentDidMount() {
           window.addEventListener('resize', this.resizeHandle, false);
           this.resizeHandle();
-          // rare-rare size detection error
+          // allow to finish draw
           this.cancelHandler = setTimeout(this.resizeHandle, 0);
         }
 
@@ -37,7 +37,31 @@ const dimensions = (
           clearTimeout(this.cancelHandler);
         }
 
-        resizeHandle = () => {
+        updateDimensions() {
+          const node = findDOMNode(this);
+          const rect = node.getBoundingClientRect();
+          const nextDimensions = pick(rect, Object.keys(defaultSize));
+          const prevDimensions = this.props[sizePropName];
+          if (!isEqual(prevDimensions, nextDimensions)) {
+            this.props[sizeSetterPropName](
+              nextDimensions
+            );
+            return true;
+          }
+          return false;
+        }
+
+        rafUpdateDimensions(c) {
+          raf(() => {
+            if (this.updateDimensions()) {
+              if (c < 10) { // break this cycle if gt
+                this.rafUpdateDimensions(c + 1);
+              }
+            }
+          });
+        }
+
+        resizeHandle = (evt) => {
           // most people prefer debounce this, I prefer not until performance issues
           const node = findDOMNode(this);
           const rect = node.getBoundingClientRect();
@@ -46,9 +70,13 @@ const dimensions = (
           const prevDimensions = this.props[sizePropName];
 
           if (!isEqual(prevDimensions, nextDimensions)) {
-            this.props[sizeSetterPropName](
-              nextDimensions
-            );
+            if (evt !== undefined) {
+              this.rafUpdateDimensions(0);
+            } else {
+              this.props[sizeSetterPropName](
+                nextDimensions
+              );
+            }
           }
         }
 

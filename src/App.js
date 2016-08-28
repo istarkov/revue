@@ -7,7 +7,7 @@ export default class App extends Component { // eslint-disable-line
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="/:noteKeys/:page" component={Layout} />
+        <Route path="/:noteKeys/:page(/:editMode)" component={Layout} />
         <Route path="/" component={Layout} />
         <Route path="/bad" component={BadExample} />
       </Router>
