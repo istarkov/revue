@@ -49,10 +49,10 @@ export const prismVirtualizedHOC = compose(
   defaultProps({
     rowHeight: 20,
     styles: prismVirtualizedStyles,
-    list: [...new Array(10000)].map((x, i) => i),
     language: 'javascript',
     colorSchema: undefined, // use default
     onScroll: () => {},
+    cache: new Map(),
   }),
   dimensions('size', { width: 0, height: 0 }),
   branch(
@@ -61,8 +61,8 @@ export const prismVirtualizedHOC = compose(
     (x) => x
   ),
   withPropsOnChange(
-    ['lines', 'colorSchema', 'lineFrom', 'lineTo'],
-    ({ lines, colorSchema, lineFrom, lineTo }) => ({
+    ['lines', 'colorSchema', 'lineFrom', 'lineTo', 'cache'],
+    ({ lines, colorSchema, lineFrom, lineTo, cache }) => ({
       // updating `rowRenderer` forces rerender of VirtualScroll
       rowRenderer: ({ index }) => (
         <PrismLine
@@ -70,6 +70,7 @@ export const prismVirtualizedHOC = compose(
           colorSchema={colorSchema}
           lineNumber={lines[index].lineNumber}
           tokens={lines[index].tokens}
+          cache={cache}
           lineClass={
             // Math.max to avoid empty selection
             (lineFrom <= index && index <= Math.max(lineTo, lineFrom))

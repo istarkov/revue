@@ -183,7 +183,7 @@ export const layoutHOC = compose(
         browserHistory.replace(`/${noteKeys}/${nextPage}/e`);
       }
     },
-    onEditorSave: ({ noteKeys, page }) => () => {
+    onEditorSave: ({ noteKeys, page, codeNotes }) => () => {
       browserHistory.push(`/${noteKeys}/${page}`);
       // setEditMode(false);
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' http://localhost:4000/save

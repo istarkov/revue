@@ -46,6 +46,67 @@ function hasType(types, type) {
   return NaN; // false on compare, as types can be undefined
 }
 
+const renderTokens = (tokens, prismLineStylesDefault, styles) =>
+  tokens.map(({ type, content, href, error }, index) => {
+    switch (type) {
+      case hasType(type, 'fileHeader'): {
+        return (
+          <div
+            key={index}
+            className={cx({
+              [styles.fileHeader]: true,
+              [styles.fileHeaderError]: error,
+            })}
+          >
+            <a
+              href={href}
+              target="_blank"
+              className={styles.fileHeaderLink}
+            >
+              {content}
+            </a>
+          </div>
+        );
+      }
+
+      case hasType(type, 'url'): {
+        return (
+          <a
+            href={href}
+            target="_blank"
+            key={index}
+            className={
+              `${prismLineStylesDefault.token} ${type2Classes(prismLineStylesDefault, type)}`
+            }
+          >
+            {content}
+          </a>
+        );
+      }
+
+      default: {
+        return (
+          <span
+            key={index}
+            className={
+              `${prismLineStylesDefault.token} ${type2Classes(prismLineStylesDefault, type)}`
+            }
+          >
+            {content}
+          </span>
+        );
+      }
+    }
+  });
+
+const renderCachedTokens = (cache, tokens, prismLineStylesDefault, styles) => {
+  if (!cache.has(tokens)) {
+    cache.set(tokens, renderTokens(tokens, prismLineStylesDefault, styles));
+  }
+
+  return cache.get(tokens);
+};
+
 export const prismLine = ({
   lineClass,
   styles,
@@ -54,6 +115,7 @@ export const prismLine = ({
   lineNumber,
   isHeader,
   showLineNumbers,
+  cache,
 }) => (
   <div className={isHeader ? styles.header : styles[lineClass]}>
     {
@@ -61,57 +123,9 @@ export const prismLine = ({
         <span data-line-number={lineNumber} />
     }
     {
-      tokens.map(({ type, content, href, error }, index) => {
-        switch (type) {
-          case hasType(type, 'fileHeader'): {
-            return (
-              <div
-                key={index}
-                className={cx({
-                  [styles.fileHeader]: true,
-                  [styles.fileHeaderError]: error,
-                })}
-              >
-                <a
-                  href={href}
-                  target="_blank"
-                  className={styles.fileHeaderLink}
-                >
-                  {content}
-                </a>
-              </div>
-            );
-          }
-
-          case hasType(type, 'url'): {
-            return (
-              <a
-                href={href}
-                target="_blank"
-                key={index}
-                className={
-                  `${prismLineStylesDefault.token} ${type2Classes(prismLineStylesDefault, type)}`
-                }
-              >
-                {content}
-              </a>
-            );
-          }
-
-          default: {
-            return (
-              <span
-                key={index}
-                className={
-                  `${prismLineStylesDefault.token} ${type2Classes(prismLineStylesDefault, type)}`
-                }
-              >
-                {content}
-              </span>
-            );
-          }
-        }
-      })
+      cache
+        ? renderCachedTokens(cache, tokens, prismLineStylesDefault, styles)
+        : renderTokens(tokens, prismLineStylesDefault, styles)
     }
   </div>
 );
@@ -127,7 +141,6 @@ export const prismLineHOC = compose(
     styles: prismLineStyles,
     prismExStyles: {},
   }),
-
   withPropsOnChange(
     ['colorSchema', 'prismExStyles'],
     ({ colorSchema, prismExStyles }) => ({
