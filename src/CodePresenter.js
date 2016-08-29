@@ -77,7 +77,7 @@ export const codePresenterHOC = compose(
       stiffness: 150,
       damping: 25,
       // to hide pixel joggling at the end of animation juts stop animation earlier,
-      precision: 15,
+      precision: 5,
     },
   }),
   branch(

@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import withPropsOnChange from 'recompose/withPropsOnChange';
+// import withPropsOnChange from 'recompose/withPropsOnChange';
 import pure from 'recompose/pure';
 import defaultProps from 'recompose/defaultProps';
 
@@ -139,19 +139,15 @@ export const prismLineHOC = compose(
     tokens: [],
     showLineNumbers: true,
     styles: prismLineStyles,
-    prismExStyles: {},
   }),
-  withPropsOnChange(
-    ['colorSchema', 'prismExStyles'],
-    ({ colorSchema, prismExStyles }) => ({
-      prismLineStylesDefault: {
+  withProps(({ tokens, prismExStyles, colorSchema }) => ({
+    isHeader: tokens.length && tokens[0].type === 'fileHeader',
+    prismLineStylesDefault: prismExStyles === undefined
+      ? prismColorStyles[colorSchema]
+      : {
         ...prismColorStyles[colorSchema],
         ...prismExStyles,
       },
-    })
-  ),
-  withProps(({ tokens }) => ({
-    isHeader: tokens.length && tokens[0].type === 'fileHeader',
   }))
 );
 
