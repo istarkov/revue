@@ -6,7 +6,7 @@ import saveButtonStyles from './button.sass';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import { Motion, spring } from 'react-motion';
-import Observable from '../utils/rxjs';
+import { Observable } from 'rxjs';
 import mapPropsStream from 'recompose/mapPropsStream';
 // import shallowEqual from 'fbjs/lib/shallowEqual';
 import setObservableConfig from 'recompose/setObservableConfig';

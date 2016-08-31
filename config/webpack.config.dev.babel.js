@@ -70,21 +70,20 @@ export default {
       ),
       // google url shortener proxy
       ...(
-        ['/load/:shortUrl', '/save'].reduce(
+        ['/load/*', '/save'].reduce(
           (r, v, index) => ({
             ...r,
             [v]: {
               target: 'https://www.googleapis.com/urlshortener/v1/url',
               secure: false,
               changeOrigin: true,
-              rewrite: (req) => {
-                req.url = `?key=${process.env.GOOGLE_API_KEY}` +  // eslint-disable-line
+              pathRewrite: (p) =>
+                `?key=${process.env.GOOGLE_API_KEY}` +  // eslint-disable-line
                   (
                     index === 0
-                      ? req.url.replace(/^\/load\//, '&shortUrl=http%3A%2F%2Fgoo.gl%2F')
-                      : req.url.replace(/^\/save/, '')
-                  );
-              },
+                      ? p.replace(/^\/load\//, '&shortUrl=http%3A%2F%2Fgoo.gl%2F')
+                      : p.replace(/^\/save/, '')
+                  ),
             },
           }),
           {}

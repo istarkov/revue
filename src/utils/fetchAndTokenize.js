@@ -1,6 +1,6 @@
 // Emulate async fetch and async tokenize
 // used for local development as sometimes I have no internet connection
-import Observable from './rxjs';
+import { Observable } from 'rxjs';
 import tokenize from '../prism/utils/tokenize';
 import detectLanguage from '../prism/utils/detectLanguage';
 import { Base64 } from 'js-base64';
@@ -30,7 +30,7 @@ const getUrl = ({ user, project, path, ref }) =>
 
 const localFetchAndTokenize = (linkObj) => (
   Observable.ajax({
-    type: 'GET',
+    method: 'GET',
     withCredentials: false,
     url: getUrl(linkObj),
   })

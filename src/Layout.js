@@ -1,5 +1,5 @@
 import React from 'react';
-import Observable from './utils/rxjs';
+import { Observable } from 'rxjs';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import defaultProps from 'recompose/defaultProps';
@@ -12,6 +12,7 @@ import Editor from './Editor/Editor';
 import parseCodeNotes from './utils/parseCodeNotes';
 import { IconLabel } from './controls/Icon';
 import { browserHistory } from 'react-router';
+import saveAtUrlShortener from './utils/saveAtUrlShortener';
 import layoutStyles from './Layout.sass';
 
 const tmpCodeNote = `https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L57-L58
@@ -136,7 +137,18 @@ export const layoutHOC = compose(
     (path) =>
       Observable
         .ajax({ type: 'GET', withCredentials: false, url: `/load/${path}` })
-        .retryWhen(error => Observable.from(error).delay(RETRY_DELAY).take(RETRY_COUNT))
+        .retryWhen(error =>
+          Observable
+            .from(error)
+            .delay(RETRY_DELAY)
+            .take(RETRY_COUNT)
+            .concat(
+              Observable.of({})
+                .map(() => {
+                  throw new Error('Loading Data Error');
+                })
+            )
+        )
         .map(({ response }) => response),
     ({ noteKeys }) => (noteKeys === '-' ? [] : noteKeys.split('-')),
     (props, fileParts) => ({
@@ -184,6 +196,17 @@ export const layoutHOC = compose(
       }
     },
     onEditorSave: ({ noteKeys, page, codeNotes }) => () => {
+      saveAtUrlShortener({
+        text: codeNotes,
+        url: '/save',
+        maxLen: 512,
+      })
+      .subscribe(
+        (v) => console.log('r', v), // done 6HZ0EU-ukvzhu-T5Rz3u-3zZHJ6-GUqCTH
+        (e) => console.error('e', e),
+        () => console.log('done')
+      );
+
       browserHistory.push(`/${noteKeys}/${page}`);
       // setEditMode(false);
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' http://localhost:4000/save

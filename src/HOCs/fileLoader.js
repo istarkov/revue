@@ -1,4 +1,4 @@
-import Observable from '../utils/rxjs';
+import { Observable } from 'rxjs';
 import mapPropsStream from 'recompose/mapPropsStream';
 import shallowEqual from 'fbjs/lib/shallowEqual';
 import setObservableConfig from 'recompose/setObservableConfig';

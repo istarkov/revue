@@ -1,4 +1,6 @@
 /* create a small subset of rxjs */
+/* PS looks like it's a not small subset :-) */
+/* deprecated */
 import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
 import { merge } from 'rxjs/observable/merge';
@@ -7,6 +9,7 @@ import { ajax } from 'rxjs/observable/dom/ajax';
 import { empty } from 'rxjs/observable/empty';
 import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
 import { mergeMap } from 'rxjs/operator/mergeMap';
+import { concatMap } from 'rxjs/operator/concatMap';
 import { map } from 'rxjs/operator/map';
 import { cache } from 'rxjs/operator/cache';
 import { _catch } from 'rxjs/operator/catch';
@@ -46,6 +49,7 @@ class ObservableExt extends Observable {
   do=_do;
   map=map;
   mergeMap=mergeMap;
+  concatMap=concatMap;
   scan=scan;
   startWith=startWith;
   webWorkerMap=webWorkerMap;
