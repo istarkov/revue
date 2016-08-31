@@ -1,6 +1,7 @@
 /* create a small subset of rxjs */
 /* PS looks like it's a not small subset :-) */
 /* deprecated */
+/* removed, will be here a an example */
 import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
 import { merge } from 'rxjs/observable/merge';
@@ -43,7 +44,7 @@ class ObservableExt extends Observable {
   cache=cache;
   combineAll=combineAll;
   combineLatest=combineLatest;
-  concat=concat;
+  concat=concat; // seems not work as expected with this implementation
   delay=delay;
   distinctUntilChanged=distinctUntilChanged;
   do=_do;

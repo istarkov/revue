@@ -73,6 +73,7 @@ const layoutComponent = ({
   onPageChange,
   onCursorLineChanged,
   onEditorSave,
+  onEditorBack,
 }) => (
   <div className={layout}>
     {
@@ -94,6 +95,7 @@ const layoutComponent = ({
             value={codeNotes}
             onChange={setCodeNotes}
             onSave={onEditorSave}
+            onBack={onEditorBack}
             onCursorLineChanged={onCursorLineChanged}
             selectedLines={selectedLines}
           />
@@ -195,7 +197,13 @@ export const layoutHOC = compose(
         browserHistory.replace(`/${noteKeys}/${nextPage}/e`);
       }
     },
-    onEditorSave: ({ noteKeys, page, codeNotes }) => () => {
+    onEditorBack: ({ noteKeys, page }) => () => {
+      browserHistory.push(`/${noteKeys}/${page}`);
+    },
+    onEditorSave: ({ page, codeNotes }) => () => {
+      // TODO show save anim
+      // TODO show error
+
       saveAtUrlShortener({
         text: codeNotes,
         url: '/save',
@@ -207,7 +215,8 @@ export const layoutHOC = compose(
         () => console.log('done')
       );
 
-      browserHistory.push(`/${noteKeys}/${page}`);
+      // browserHistory.push(`/${noteKeys}/${page}`);
+
       // setEditMode(false);
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' http://localhost:4000/save
       // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyB0ofrDxiagMe2XFecOTF3KcK3MDIQ4ems

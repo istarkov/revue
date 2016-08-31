@@ -119,6 +119,7 @@ export class Editor extends Component {
         styles,
         hasChanged,
         onSave,
+        onBack,
       },
       setRef,
     } = this;
@@ -133,7 +134,7 @@ export class Editor extends Component {
           <Button onClick={onSave} active={hasChanged}>
             SAVE
           </Button>
-          <Button onClick={onSave} theme={styles} themeNamespace="cancel" active>
+          <Button onClick={onBack} theme={styles} themeNamespace="cancel" active>
             BACK
           </Button>
         </div>
