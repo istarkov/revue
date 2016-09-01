@@ -1,32 +1,39 @@
-const codeNotes = `https://github.com/user/proj/blob/master/src/oneBigCool.js#L1-L10
+const codeNotes = `https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L57-L58
 
-Notes supports \`code\` *itallic* and **bold** and _itallic_ and __bold__
+# Hello World
+This is **hello world** mycode.tips example
 
-https://github.com/user/proj/blob/master/src/sass/myStyle.sass#L1-L16
+https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L105-111
 
-# Support headers
-and multiline notes _like_ **current** _note_
+# Hello World 2
+This is **hello world** mycode.tips example
 
-https://github.com/user/proj/blob/master/src/sass/myStyle.sass#L1-L3
 
-And should support links [Яndex.ru](http://yandex.ru)
+https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L154-L158
 
-https://github.com/user/proj/blob/master/src/sass/myStyle.sass#L4-L7
-https://github.com/user/proj/blob/master/src/sass/myStyle.sass#L8-L12
+# Hello World 3
+This is **hello world** mycode.tips example
 
-and **BIG *COOL* CODE**
+https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L202-L207
 
-https://github.com/user/proj/blob/master/src/Third.js#L9-L9
-https://github.com/user/proj/blob/master/src/Third.js#L9-L10
-https://github.com/user/proj/blob/master/src/Third.js#L10-L11
+# Hello World 4
+This is **hello world** mycode.tips example
 
-Hello
+https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L258-L264
 
-https://github.com/user/proj/blob/master/src/Third.js#L97-L98
+# Hello World 5
+This is **hello world** mycode.tips example
 
-last note
-ura
+
+https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/marker_dispatcher.js#L9-L11
+
+# Marker dispatcher
+This is **hello world** mycode.tips example
+
+https://github.com/user/proj/blob/master/src/oneBigCool.js#L1-L10
+
+Error
+
 `;
-
 
 export default codeNotes;

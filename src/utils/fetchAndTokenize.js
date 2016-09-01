@@ -28,7 +28,7 @@ const fileHeaderTokens = ({ path, href }, error) => [
 const getUrl = ({ user, project, path, ref }) =>
   `/repos/${user}/${project}/contents/${path}?ref=${ref}`;
 
-const localFetchAndTokenize = (linkObj) => (
+const fetchAndTokenize = (linkObj) => (
   Observable.ajax({
     method: 'GET',
     withCredentials: false,
@@ -85,4 +85,4 @@ json: ${JSON.stringify(e.xhr.response, null, ' ')}
     )
 );
 
-export default localFetchAndTokenize;
+export default fetchAndTokenize;

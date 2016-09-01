@@ -1,57 +1,29 @@
 import React from 'react';
-import { Observable } from 'rxjs';
+import isObject from 'lodash/isObject';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
+import withState from 'recompose/withState';
+import branch from 'recompose/branch';
+import renderComponent from 'recompose/renderComponent';
 import defaultProps from 'recompose/defaultProps';
 import withHandlers from 'recompose/withHandlers';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import withStateSelector from './HOCs/withStateSelector';
 import fileLoader from './HOCs/fileLoader';
 import CodePresenterContainer from './CodePresenterContainer';
-import Editor from './Editor/Editor';
+import Editor from './Editor';
+import Loading from './Loading';
+import Notification from './Notification';
 import parseCodeNotes from './utils/parseCodeNotes';
 import { IconLabel } from './controls/Icon';
 import { browserHistory } from 'react-router';
-import saveAtUrlShortener from './utils/saveAtUrlShortener';
+import {
+  saveAtUrlShortener, loadFromUrlShortener, decodeUrlShortenerData,
+} from './utils/gooGlUrlShortenerAPI';
 import layoutStyles from './Layout.sass';
+// import tmpCodeNote from './utils/tmp/codeNotes';
 
-const tmpCodeNote = `https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L57-L58
-
-# Hello World
-This is **hello world** mycode.tips example
-
-https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L105-111
-
-# Hello World 2
-This is **hello world** mycode.tips example
-
-
-https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L154-L158
-
-# Hello World 3
-This is **hello world** mycode.tips example
-
-https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L202-L207
-
-# Hello World 4
-This is **hello world** mycode.tips example
-
-https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/google_map.js#L258-L264
-
-# Hello World 5
-This is **hello world** mycode.tips example
-
-
-https://github.com/istarkov/google-map-react/blob/7542b69310865066b05f88af3690040c1f76ae3c/src/marker_dispatcher.js#L9-L11
-
-# Marker dispatcher
-This is **hello world** mycode.tips example
-
-https://github.com/user/proj/blob/master/src/oneBigCool.js#L1-L10
-
-Error
-
-`;
+const DEFAULT_NOTE_KEY = '6HZ0EU';
 
 const layoutComponent = ({
   styles: {
@@ -74,8 +46,19 @@ const layoutComponent = ({
   onCursorLineChanged,
   onEditorSave,
   onEditorBack,
+  saveErrors,
+  onResetSaveErrors,
 }) => (
   <div className={layout}>
+    {
+      saveErrors &&
+        <Notification
+          title={'SAVE ERROR'}
+          list={saveErrors}
+          buttonText={'Try save later'}
+          onButtonClick={onResetSaveErrors}
+        />
+    }
     {
       !editMode &&
         <div className={editButton}>
@@ -120,49 +103,70 @@ const layoutComponent = ({
   </div>
 );
 
-const RETRY_COUNT = 3;
-const RETRY_DELAY = 1000;
 export const layoutHOC = compose(
   defaultProps({
     styles: layoutStyles,
   }),
   withProps(({ params: { page, noteKeys, editMode } }) => ({
     page: +page,
-    noteKeys: noteKeys || '-',
+    noteKeys: noteKeys || DEFAULT_NOTE_KEY,
     editMode: !!editMode,
   })),
-  // withState('editMode', 'setEditMode', false),
-  // http://localhost:3000/PxRF6e-lala/0
-  // curl -X GET 'http://localhost:4000/load/FKLRm2'
-  // curl -X GET 'https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyB0ofrDxiagMe2XFecOTF3KcK3MDIQ4ems&shortUrl=http://goo.gl/FKLRm2'
   fileLoader(
-    (path) =>
-      Observable
-        .ajax({ type: 'GET', withCredentials: false, url: `/load/${path}` })
-        .retryWhen(error =>
-          Observable
-            .from(error)
-            .delay(RETRY_DELAY)
-            .take(RETRY_COUNT)
-            .concat(
-              Observable.of({})
-                .map(() => {
-                  throw new Error('Loading Data Error');
-                })
-            )
-        )
-        .map(({ response }) => response),
-    ({ noteKeys }) => (noteKeys === '-' ? [] : noteKeys.split('-')),
-    (props, fileParts) => ({
+    (path) => loadFromUrlShortener(path),
+    ({ noteKeys }) => (noteKeys || DEFAULT_NOTE_KEY).split('-'),
+    (props, base64EditorContentArray) => ({
       ...props,
-      fileParts,
+      base64EditorContentArray,
     })
+  ),
+  // base64EditorContentArray
+  withPropsOnChange(
+    ['base64EditorContentArray'],
+    ({ base64EditorContentArray }) => {
+      if (base64EditorContentArray !== undefined) {
+        const errors = base64EditorContentArray.filter(isObject)
+          .map(({ payload }) => payload.message);
+
+        if (errors.length > 0) {
+          return {
+            errors,
+          };
+        }
+
+        const defaultCodeNotes = decodeUrlShortenerData(base64EditorContentArray);
+        return {
+          defaultCodeNotes,
+        };
+      }
+
+      return {
+        editorContentLoading: true,
+      };
+    }
+  ),
+  branch(
+    ({ editorContentLoading }) => editorContentLoading,
+    renderComponent(() => <Loading text={'LOADING'} />),
+    (v) => v,
+  ),
+  branch(
+    ({ errors }) => errors && errors.length > 0,
+    renderComponent(({ errors }) => (
+      <Notification
+        title={'LOADING ERROR'}
+        list={errors}
+        buttonText={'Visit homepage'}
+        onButtonClick={() => browserHistory.push('/')}
+      />
+    )),
+    (v) => v,
   ),
   // The same as withState but every time note changed codeNotes is resetted
   withStateSelector(
     'codeNotes',
     'setCodeNotes',
-    () => () => tmpCodeNote // fileParts || tmpCodeNote
+    () => ({ defaultCodeNotes }) => defaultCodeNotes
   ),
   withPropsOnChange(
     ['codeNotes'],
@@ -177,6 +181,7 @@ export const layoutHOC = compose(
       selectedLines: codeNotesParsed.map(({ source: { lineFrom } }) => lineFrom),
     })
   ),
+  withState('saveErrors', 'setSaveErrors', undefined),
   withHandlers({
     onEditClick: ({ noteKeys, page }) => () => {
       browserHistory.push(`/${noteKeys}/${page}/e`);
@@ -200,28 +205,21 @@ export const layoutHOC = compose(
     onEditorBack: ({ noteKeys, page }) => () => {
       browserHistory.push(`/${noteKeys}/${page}`);
     },
-    onEditorSave: ({ page, codeNotes }) => () => {
-      // TODO show save anim
-      // TODO show error
+    onEditorSave: ({ noteKeys, page, codeNotes, setSaveErrors }) => () => {
+      // hide save buttons,
+      browserHistory.push(`/${noteKeys}/${page}`);
 
       saveAtUrlShortener({
         text: codeNotes,
-        url: '/save',
-        maxLen: 512,
       })
       .subscribe(
-        (v) => console.log('r', v), // done 6HZ0EU-ukvzhu-T5Rz3u-3zZHJ6-GUqCTH
-        (e) => console.error('e', e),
-        () => console.log('done')
+        (newNoteKeys) => browserHistory.push(`/${newNoteKeys}/${page}`),
+        (e) => setSaveErrors([e.message]),
+        () => {}
       );
-
-      // browserHistory.push(`/${noteKeys}/${page}`);
-
-      // setEditMode(false);
-      // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' http://localhost:4000/save
-      // curl -H "Content-Type: application/json" -X POST -d '{"longUrl":"http://aaa?HELLOAFRECA"}' https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyB0ofrDxiagMe2XFecOTF3KcK3MDIQ4ems
-
-      console.log('onSave');
+    },
+    onResetSaveErrors: ({ setSaveErrors }) => () => {
+      setSaveErrors(undefined);
     },
   }),
 );

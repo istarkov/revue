@@ -14,11 +14,14 @@ const encodeText = (text, maxLen) => {
   return [encoded];
 };
 
+const BIG_NUMBER = 10000;
 const RETRY_COUNT = 3;
 const RETRY_DELAY = 1000;
-const END_OBJ = {};
+const POST_URL = '/save';
+const GET_URL = '/load';
+const MAX_URL_LEN_GOOGL_ALLOWS = 2048;
 
-export default ({ text, maxLen, url }) => {
+export const saveAtUrlShortener = ({ text, maxLen = MAX_URL_LEN_GOOGL_ALLOWS }) => {
   const encodedTexts = encodeText(text, maxLen);
 
   return Observable
@@ -30,7 +33,7 @@ export default ({ text, maxLen, url }) => {
     .concatMap(body =>
       Observable.ajax({
         method: 'POST',
-        url,
+        url: POST_URL,
         body,
         withCredentials: false,
         crossDomain: false,
@@ -45,24 +48,35 @@ export default ({ text, maxLen, url }) => {
           .concat(
             Observable.of({})
               .map(() => {
-                throw new Error('Retry Error');
+                throw new Error('Save error');
               })
           )
       )
     )
     .map(({ response }) => response)
     .map(({ id }) => id.replace('http://goo.gl/', ''))
-    .concat(Observable.of(END_OBJ))
-    .scan((r, v) => (
-        v === END_OBJ
-          ? { ...r, isEnd: true }
-          : { keys: r.keys === '' ? v : `${r.keys}-${v}` }
-      ),
-      { keys: '' }
-    )
-    .mergeMap(v => (
-      v.isEnd
-        ? Observable.of(v.keys)
-        : Observable.empty()
-    ));
+    .bufferCount(BIG_NUMBER)
+    .map(ids => ids.join('-'));
 };
+
+export const loadFromUrlShortener = (path) =>
+  Observable
+    .ajax({ type: 'GET', withCredentials: false, url: `${GET_URL}/${path}` })
+    .retryWhen(error =>
+      Observable
+        .from(error)
+        .delay(RETRY_DELAY)
+        .take(RETRY_COUNT)
+        .concat(
+          Observable.of({})
+            .map(() => {
+              throw new Error(`URL shortener loading error at path=${path}`);
+            })
+        )
+    )
+    .map(({ response }) => response)
+    .map(({ longUrl }) => longUrl.substr(URL_LIKE_PREFIX.length + 2))
+    .catch(e => Observable.of({ error: true, payload: e })); // :-) no redux ha
+
+export const decodeUrlShortenerData = (base64List) =>
+  base64List.map(text => Base64.decode(text)).join('');
