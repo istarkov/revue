@@ -11,6 +11,12 @@ import 'prismjs/components/prism-sass';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-ocaml';
 
 export const EXT_2LANGUAGE = {
   'js, jsx, mjs': 'jsx',
@@ -19,6 +25,9 @@ export const EXT_2LANGUAGE = {
   css: 'css',
   py: 'python',
   'php, php5': 'php',
+  go: 'go',
+  java: 'java',
+  ts: 'typescript',
+  'c, cpp, hpp, h, hh': 'cpp',
+  'ml, mli, fs, fsx': 'ocaml',
 };
-
-// TODO add 10 languages I love
