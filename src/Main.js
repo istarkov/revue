@@ -1,3 +1,4 @@
+import './prism/utils/languages';
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
 import App from './App';

@@ -27,7 +27,7 @@ const withStateSelector = (stateName, stateUpdaterName, selectorFactory) =>
         const nextStateValue = this.selector(nextProps);
         if (nextStateValue !== this.state.selectorValue) {
           this.setState({
-            selectorValue: this.initialValue,
+            selectorValue: nextStateValue,
             stateValue: nextStateValue,
           });
         }

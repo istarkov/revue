@@ -194,7 +194,6 @@ export const layoutHOC = compose(
       }
     },
     onCursorLineChanged: ({ noteKeys, codeNotesParsed, page }) => (line) => {
-      // console.log('line', codeNotesParsed, line);
       const nextPage = codeNotesParsed
         .findIndex(({ source: { lineFrom, lineTo } }) => lineFrom <= line && line <= lineTo);
       if (nextPage >= 0 && nextPage !== page) {

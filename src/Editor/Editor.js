@@ -85,7 +85,6 @@ export class Editor extends Component {
 
   updateSelectedLines = () => {
     this.editor.operation(() => {
-      // console.log('this.selectedLinesHandles', this.selectedLinesHandles);
       this.selectedLinesHandles.forEach(
         lineHandle =>
           this.editor.removeLineClass(lineHandle, 'background', this.props.styles.selectedLine)

@@ -1,11 +1,5 @@
 /* @flow */
 import { tokenize, languages } from 'prismjs';
-import './components/prismMarkdown';
-import 'prismjs/components/prism-php';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-sass';
-import 'prismjs/components/prism-scss';
-import 'prismjs/components/prism-bash';
 import type { Token } from 'prismjs'; // eslint-disable-line
 
 const guid = 'c92b0471-8718-4b38-9ffe-d169f6e33910';

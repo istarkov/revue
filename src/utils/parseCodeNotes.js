@@ -44,10 +44,9 @@ const parseTokenLink = (token) => {
 
 const REMOVE_PUNCTUACTION = true;
 const parseCodeNotes = (str: string) => {
-  // console.log('--\n\n', JSON.stringify(tokenize(str, 'markdown'), null, ' '));
   const tokenizedLines = tokenize(str, 'markdown', REMOVE_PUNCTUACTION);
   const output = [];
-  // const description = [];
+
   for (let i = 0; i !== tokenizedLines.length; ++i) {
     const currentLineTokens = tokenizedLines[i];
     const gitHubUrlToken = currentLineTokens.find(({ type }) => type === 'github-url');
@@ -63,11 +62,8 @@ const parseCodeNotes = (str: string) => {
     } else if (output.length > 0) {
       output[output.length - 1].noteLines.push(currentLineTokens);
       output[output.length - 1].source.lineTo++;
-    } else {
-      // description.push(currentLineTokens);
     }
   }
-
 
   return output
     // trim noteLines

@@ -15,7 +15,6 @@ const style = {
 };
 
 export const badExample = ({ scrollTop, runAnim }) => (
-  console.log(scrollTop),
   <div style={style}>
     <VirtualScroll
       scrollTop={scrollTop}

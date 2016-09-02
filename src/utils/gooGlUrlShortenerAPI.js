@@ -1,12 +1,16 @@
 /*
-instead of DB I use goo.gl url shortener, using short pathes as data keys,
-and long urls as a data, such db is easy and free
+instead of DB I use goo.gl url shortener,
+using short urls as data keys,
+and long urls as a data,
+this db like solution is free with some limiations
 */
 import { Observable } from 'rxjs';
 import { Base64 } from 'js-base64';
+// to fake url, as goo.gl checks url
 const URL_LIKE_PREFIX = 'http://xxx';
 import tmpCodeNote from './tmp/codeNotes';
 
+// split long texts on multiple chunks, as goo.gl has a length limitation for urls
 const encodeText = (text, maxLen) => {
   const encoded = Base64.encode(text);
   if (encoded.length > maxLen) {
