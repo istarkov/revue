@@ -3,7 +3,7 @@ import tokenize from '../prism/utils/tokenize';
 // import uuid from 'node-uuid';
 
 export const parseLink = (link: string) => {
-  const re = /(https?):\/\/(github\.com)\/([\w-]+)\/([\w-]+)\/(?:[\w-]+)\/([\w-]+)\/([\w-\/\.]+)#?L?(\d+)?-?L?(\d*)?/; // eslint-disable-line
+  const re = /(https?):\/\/(github\.com)\/([^\/]+)\/([^\/]+)\/(?:[^\/]+)\/([^\/]+)\/([^#\n\r]+)#?L?(\d+)?-?L?(\d*)?/; // eslint-disable-line
   const match = link.match(re);
   if (!match) {
     throw new Error(`Cant parse link ${link}`);

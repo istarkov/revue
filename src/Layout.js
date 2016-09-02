@@ -22,7 +22,7 @@ import {
 } from './utils/gooGlUrlShortenerAPI';
 import layoutStyles from './Layout.sass';
 
-const DEFAULT_NOTE_KEY = '6HZ0EU';
+const DEFAULT_NOTE_KEY = 'nIk5UF';
 
 const layoutComponent = ({
   styles: {

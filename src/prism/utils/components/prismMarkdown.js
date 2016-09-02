@@ -5,7 +5,7 @@ Prism.languages.markdown = Prism.languages.extend('markup', {});
 Prism.languages.insertBefore('markdown', 'prolog', {
   'github-url': {
 		// https://github.com/istarkov/google-map-react/blob/0296eb678ad54f441c30dc566ec817a636d4a5c0/src/google_map.js#L35-L41
-		pattern: /https?:\/\/github\.com\/(?:[\w-]+)\/(?:[\w-]+)\/(?:[\w-]+)\/(?:[\w-]+)\/(?:[\w-\/\.]+)#?L?(?:\d+)?-?L?(?:\d*)?/,
+		pattern: /https?:\/\/github\.com\/(?:[^\/]+)\/(?:[^\/]+)\/(?:[^\/]+)\/(?:[^\/]+)\/(?:[^#\n\r]+)#?L?(?:\d+)?-?L?(?:\d*)?/,
 	},
 
 	'blockquote': {

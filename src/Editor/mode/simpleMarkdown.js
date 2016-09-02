@@ -7,7 +7,7 @@ codeMirror.defineSimpleMode('simpleMarkdown', {
   // The start state contains the rules that are intially used
   start: [
     {
-      regex: /(https?:\/\/github\.com\/)([\w-]+)(\/)([\w-]+)(\/[\w-]+\/[\w-]+\/)([\w-\/\.]+)(#)*(.*)/,
+      regex: /(https?:\/\/github\.com\/)([^\/]+)(\/)([^\/]+)(\/[^\/]+\/[^\/]+\/)([^#\n\r]+)(#)*(.*)/,
       token: [
         'link-comment', // protocol-domain
         'number', // user company
