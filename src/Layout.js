@@ -21,7 +21,6 @@ import {
   saveAtUrlShortener, loadFromUrlShortener, decodeUrlShortenerData,
 } from './utils/gooGlUrlShortenerAPI';
 import layoutStyles from './Layout.sass';
-// import tmpCodeNote from './utils/tmp/codeNotes';
 
 const DEFAULT_NOTE_KEY = '6HZ0EU';
 
