@@ -1,6 +1,6 @@
 /**
  * To add new language you need to add prism support for it
- * You could see languages supported here http://prismjs.com/#languages-list
+ * You could see languages supported by prism here http://prismjs.com/#languages-list
  * Then you need to provide extensions associacion
  */
 import 'prismjs';
@@ -17,3 +17,5 @@ export const EXT_2LANGUAGE = {
   scss: 'scss',
   css: 'css',
 };
+
+// TODO add 10 languages I love
