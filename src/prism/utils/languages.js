@@ -17,6 +17,9 @@ import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';
 import 'prismjs/components/prism-ocaml';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-lua';
+import 'prismjs/components/prism-yaml';
 
 export const EXT_2LANGUAGE = {
   'js, jsx, mjs': 'jsx',
@@ -30,4 +33,7 @@ export const EXT_2LANGUAGE = {
   ts: 'typescript',
   'c, cpp, hpp, h, hh': 'cpp',
   'ml, mli, fs, fsx': 'ocaml',
+  json: 'json',
+  lua: 'lua',
+  yml: 'yaml',
 };
