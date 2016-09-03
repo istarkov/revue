@@ -7,6 +7,8 @@ It allows you to create, edit and share nice looking descriptive reviews of any 
 Use arrow keys or spacebar (shift spacebar) to navigate.   
 Click on edit button (in one of top corners) to start edit.
 
+Please use [permalinks](https://help.github.com/articles/getting-permanent-links-to-files/) to [code lines](https://blog.mariusschulz.com/2015/07/25/sharing-line-highlights-in-github-files)
+(_[revue.io](https://revue.io) caches github files to avoid overrate [github api](https://developer.github.com/v3/rate_limit/)_)
 
 # Languages support
 
