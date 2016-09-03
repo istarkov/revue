@@ -88,8 +88,6 @@ export const loadFromUrlShortener = (path) => (
         )
         .map(({ response }) => response)
         .map(({ longUrl }) => longUrl.substr(URL_LIKE_PREFIX.length + 2))
+        .map(encodedText => Base64.decode(encodedText))
         .catch(e => Observable.of({ error: true, payload: e }))
 );
-
-export const decodeUrlShortenerData = (base64List) =>
-  base64List.map(text => Base64.decode(text)).join('');

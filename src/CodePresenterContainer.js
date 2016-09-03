@@ -47,7 +47,6 @@ const codePresenterContainer = ({
   ...props,
 }: InputProps) => (
   <CodePresenter
-    // loaded and prepared data
     {...{ lines, headers, codeNotes }}
     {...props}
   />

@@ -79,7 +79,6 @@ export const prismVirtualizedHOC = compose(
           }
         />
       ),
-      // TODO add header track calculation
     })
   ),
 );

@@ -1,11 +1,11 @@
 import React from 'react';
+import { themr } from 'react-css-themr';
 import isObject from 'lodash/isObject';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import withState from 'recompose/withState';
 import branch from 'recompose/branch';
 import renderComponent from 'recompose/renderComponent';
-import defaultProps from 'recompose/defaultProps';
 import withHandlers from 'recompose/withHandlers';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import withStateSelector from './HOCs/withStateSelector';
@@ -17,38 +17,29 @@ import Notification from './Notification';
 import parseCodeNotes from './utils/parseCodeNotes';
 import { IconLabel } from './controls/Icon';
 import { browserHistory } from 'react-router';
-import {
-  saveAtUrlShortener, loadFromUrlShortener, decodeUrlShortenerData,
-} from './utils/gooGlUrlShortenerAPI';
+import { saveAtUrlShortener, loadFromUrlShortener } from './utils/gooGlUrlShortenerAPI';
 import layoutStyles from './Layout.sass';
 
 const DEFAULT_NOTE_KEY = 'nIk5UF';
 
 const layoutComponent = ({
-  styles: {
-    layout,
-    main,
-    editor,
-    side,
-    editButton,
-    octocatButton,
-  },
-  editMode,
-  onEditClick,
-  onOctocatClick,
-  codeNotes,
-  codeNotesParsed,
-  selectedLines,
-  setCodeNotes,
   page,
+  theme,
+  editMode,
+  codeNotes,
+  selectedLines,
+  codeNotesParsed,
+  saveErrors,
+  onEditClick,
+  setCodeNotes,
   onPageChange,
-  onCursorLineChanged,
   onEditorSave,
   onEditorBack,
-  saveErrors,
+  onOctocatClick,
   onResetSaveErrors,
+  onCursorLineChanged,
 }) => (
-  <div className={layout}>
+  <div className={theme.layout}>
     {
       saveErrors &&
         <Notification
@@ -60,19 +51,19 @@ const layoutComponent = ({
     }
     {
       !editMode &&
-        <div className={editButton}>
+        <div className={theme.editButton}>
           <IconLabel onClick={onEditClick} name="edit" />
         </div>
     }
     {
       !editMode &&
-        <div className={octocatButton}>
+        <div className={theme.octocatButton}>
           <IconLabel onClick={onOctocatClick} name="octocat" />
         </div>
     }
     {
       editMode &&
-        <div className={editor}>
+        <div className={theme.editor}>
           <Editor
             value={codeNotes}
             onChange={setCodeNotes}
@@ -85,9 +76,9 @@ const layoutComponent = ({
     }
     {
       !editMode &&
-        <div className={side} />
+        <div className={theme.side} />
     }
-    <div className={main}>
+    <div className={theme.main}>
       <CodePresenterContainer
         codeNotes={codeNotesParsed}
         page={page}
@@ -96,35 +87,35 @@ const layoutComponent = ({
     </div>
     {
       !editMode &&
-        <div className={side}>
+        <div className={theme.side}>
         </div>
     }
   </div>
 );
 
 export const layoutHOC = compose(
-  defaultProps({
-    styles: layoutStyles,
-  }),
+  themr('Layout', layoutStyles),
+  // make router params typed
   withProps(({ params: { page, noteKeys, editMode } }) => ({
     page: +page,
     noteKeys: noteKeys || DEFAULT_NOTE_KEY,
     editMode: !!editMode,
   })),
+  // load codeNotes from db (now it's goo.gl url shortener)
   fileLoader(
     (path) => loadFromUrlShortener(path),
     ({ noteKeys }) => (noteKeys || DEFAULT_NOTE_KEY).split('-'),
-    (props, base64EditorContentArray) => ({
+    (props, codeNotesArray) => ({
       ...props,
-      base64EditorContentArray,
+      codeNotesArray,
     })
   ),
-  // base64EditorContentArray
+  // check file loader result
   withPropsOnChange(
-    ['base64EditorContentArray'],
-    ({ base64EditorContentArray }) => {
-      if (base64EditorContentArray !== undefined) {
-        const errors = base64EditorContentArray.filter(isObject)
+    ['codeNotesArray'],
+    ({ codeNotesArray }) => {
+      if (codeNotesArray !== undefined) {
+        const errors = codeNotesArray.filter(isObject)
           .map(({ payload }) => payload.message);
 
         if (errors.length > 0) {
@@ -132,8 +123,9 @@ export const layoutHOC = compose(
             errors,
           };
         }
-
-        const defaultCodeNotes = decodeUrlShortenerData(base64EditorContentArray);
+        // goo.gl does not allow to save a big amount of data, so I split long notes
+        // and need to join them after loading if needed
+        const defaultCodeNotes = codeNotesArray.join('');
         return {
           defaultCodeNotes,
         };
@@ -161,7 +153,7 @@ export const layoutHOC = compose(
     )),
     (v) => v,
   ),
-  // The same as withState but every time note changed codeNotes is resetted
+  // The same as withState but every time defaultCodeNotes changed codeNotes is resetted
   withStateSelector(
     'codeNotes',
     'setCodeNotes',
