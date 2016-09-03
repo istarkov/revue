@@ -17,7 +17,7 @@ provide a PR.
 
 # Awesome reviews
 
-(_Here could be your library review link_)
+(_Here could be your code review link_)
 
 # Install
 
