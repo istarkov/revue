@@ -14,7 +14,7 @@ import tmpCodeNote from './tmp/codeNotes';
 const encodeText = (text, maxLen) => {
   const encoded = Base64.encode(text);
   if (encoded.length > maxLen) {
-    const splitPoint = encoded.length >> 1;
+    const splitPoint = text.length >> 1;
     return [
       ...encodeText(text.slice(0, splitPoint), maxLen),
       ...encodeText(text.slice(splitPoint), maxLen),
@@ -28,7 +28,7 @@ const RETRY_COUNT = 3;
 const RETRY_DELAY = 1000;
 const POST_URL = '/save';
 const GET_URL = '/load';
-const MAX_URL_LEN_GOOGL_ALLOWS = 2048;
+const MAX_URL_LEN_GOOGL_ALLOWS = 2000;
 
 export const saveAtUrlShortener = ({ text, maxLen = MAX_URL_LEN_GOOGL_ALLOWS }) => {
   const encodedTexts = encodeText(text, maxLen);
