@@ -46,7 +46,7 @@ Example
 GITHUB_USER_AUTH_TOKEN='vasyapupkin:e3150a4dca108b' PORT=3000 npm run start:prod
 ```
 
-One problem you could get with this solution, that the code description (_not the code itself_) will be published on a public `goo.gl` server, so if your security does not allow you to publish this.
+One problem you could get with this solution, that the code description (_not the code itself_) will be published on a public `goo.gl` server, so if your security does not allow you to publish something like this
 
 ```markdown
 https://github.com/istarkov/google-map-react/blob/master/src/google_map.js#L154-158
@@ -56,6 +56,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ...
 ```
 
-You could provide a PR to this project with your `save/load` api solution.
+you could provide a PR to this project with your `save/load` api solution.
 
 (_For now this project uses goo.gl url shortener as a free high availability database_)
