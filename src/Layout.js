@@ -178,7 +178,7 @@ export const layoutHOC = compose(
       browserHistory.push(`/${noteKeys}/${page}/e`);
     },
     onOctocatClick: () => () => {
-      window.open('https://github.com/istarkov');
+      window.open('https://github.com/istarkov/revue');
     },
     onPageChange: ({ noteKeys, page, editMode }) => (nextPage) => {
       if (page !== nextPage) {

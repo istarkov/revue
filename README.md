@@ -10,6 +10,7 @@ nice looking descriptive reviews of any code published on github.
 Use arrow keys or spacebar (shift spacebar) to navigate.   
 Click on edit button (in one of top corners) to start edit.
 
+
 Please use [permalinks](https://help.github.com/articles/getting-permanent-links-to-files/)
 to [code lines](https://blog.mariusschulz.com/2015/07/25/sharing-line-highlights-in-github-files)
 (_[revue.io](https://revue.io) caches github files
@@ -68,6 +69,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ...
 ```
 
-you could provide a PR to this project with your `save/load` api solution.
+you could provide a PR to this project with your `save/load` api solution,
+or just save editor content locally as it's just plain txt file.
 
 (_For now this project uses goo.gl url shortener as a free high availability database_)
