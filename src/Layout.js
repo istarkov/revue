@@ -20,7 +20,7 @@ import { browserHistory } from 'react-router';
 import { saveAtUrlShortener, loadFromUrlShortener } from './utils/gooGlUrlShortenerAPI';
 import layoutStyles from './Layout.sass';
 
-const DEFAULT_NOTE_KEY = 'nIk5UF';
+const DEFAULT_NOTE_KEY = 'SJCDlC-Ma8QQF';
 
 const layoutComponent = ({
   page,
