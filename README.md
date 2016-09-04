@@ -10,7 +10,7 @@ nice looking descriptive reviews of any code published on github.
 Use arrow keys or spacebar (shift spacebar) to navigate.   
 Click on edit button (in one of top corners) to start edit.
 
-<img src="demo.gif" width="300"/>
+<img src="demo.gif" width="400"/>
 
 Please use [permalinks](https://help.github.com/articles/getting-permanent-links-to-files/)
 to [code lines](https://blog.mariusschulz.com/2015/07/25/sharing-line-highlights-in-github-files)
