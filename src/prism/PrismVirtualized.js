@@ -64,9 +64,10 @@ export const prismVirtualizedHOC = compose(
     ['lines', 'colorSchema', 'lineFrom', 'lineTo', 'cache'],
     ({ lines, colorSchema, lineFrom, lineTo, cache }) => ({
       // updating `rowRenderer` forces rerender of VirtualScroll
-      rowRenderer: ({ index }) => (
+      rowRenderer: ({ index, style, key }) => (
         <PrismLine
-          key={index}
+          key={key}
+          style={style}
           colorSchema={colorSchema}
           lineNumber={lines[index].lineNumber}
           tokens={lines[index].tokens}
