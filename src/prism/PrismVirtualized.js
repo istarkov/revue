@@ -19,7 +19,6 @@ export const prismVirtualized = ({
   onScroll,
   rowRenderer,
   headers,
-  scrollParams,
   rowHeight,
 }) => (
   <div className={styles.main}>
@@ -29,7 +28,7 @@ export const prismVirtualized = ({
     >
       <FileHeaders
         headers={headers}
-        scrollParams={scrollParams}
+        scrollTop={scrollTop}
         rowHeight={rowHeight}
       />
       <PrismVirtualScroll
@@ -64,9 +63,10 @@ export const prismVirtualizedHOC = compose(
     ['lines', 'colorSchema', 'lineFrom', 'lineTo', 'cache'],
     ({ lines, colorSchema, lineFrom, lineTo, cache }) => ({
       // updating `rowRenderer` forces rerender of VirtualScroll
-      rowRenderer: ({ index }) => (
+      rowRenderer: ({ index, style, key }) => (
         <PrismLine
-          key={index}
+          key={key}
+          style={style}
           colorSchema={colorSchema}
           lineNumber={lines[index].lineNumber}
           tokens={lines[index].tokens}

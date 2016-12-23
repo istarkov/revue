@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import defaultProps from 'recompose/defaultProps';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import pure from 'recompose/pure';
-import mapProps from 'recompose/mapProps';
+// import mapProps from 'recompose/mapProps';
 import fileHeadersStyles from './fileHeaders.sass';
 import scrollbarSize from 'dom-helpers/util/scrollbarSize';
 
@@ -29,11 +29,12 @@ export const fileHeaders = ({ posStyle, styles, currentHeader }) => (
 export const fileHeadersHOC = compose(
   defaultProps({
     styles: fileHeadersStyles,
-    scrollParams: { scrollTop: 0 },
+    // scrollParams: { scrollTop: 0 },
+    scrollTop: 0,
   }),
   withPropsOnChange(
-    ['rowHeight', 'scrollParams', 'headers'],
-    ({ rowHeight, scrollParams: { scrollTop }, headers }) => {
+    ['rowHeight', 'scrollTop', 'headers'],
+    ({ rowHeight, scrollTop, headers }) => {
       const headersReversed = [...headers].reverse();
       const currentHeaderIdx = headersReversed
         .findIndex(({ lineNumber }) => (lineNumber * rowHeight <= scrollTop));
@@ -65,7 +66,7 @@ export const fileHeadersHOC = compose(
     })
   ),
   // omit scrollParams
-  mapProps(({ scrollParams, ...props }) => props), // eslint-disable-line
+  // mapProps(({ scrollParams, ...props }) => props), // eslint-disable-line
   pure
 );
 

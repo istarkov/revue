@@ -109,6 +109,7 @@ const renderCachedTokens = (cache, tokens, prismLineStylesDefault, styles) => {
 
 export const prismLine = ({
   lineClass,
+  style,
   styles,
   prismLineStylesDefault,
   tokens,
@@ -117,7 +118,7 @@ export const prismLine = ({
   showLineNumbers,
   cache,
 }) => (
-  <div className={isHeader ? styles.header : styles[lineClass]}>
+  <div style={style} className={isHeader ? styles.header : styles[lineClass]}>
     {
       showLineNumbers &&
         <span data-line-number={lineNumber} />
