@@ -29,6 +29,7 @@ export const codePresenter = ({
   transitionWillEnter,
   page,
   onPageChange,
+  scrollTop,
 }) => (
   <div className={styles.main}>
     <TransitionMotion
@@ -38,20 +39,23 @@ export const codePresenter = ({
       {
         (interpolatedStyles) => {
           const currentStyle = interpolatedStyles.find(s => s.key === transitionKey);
+
+          const isInAnim = (currentStyle && currentStyle.style && currentStyle.style.scrollTop) !==
+            scrollTop;
+
           return (
             <PrismVirtualized
               scrollTop={
-                currentStyle && currentStyle.style
+                isInAnim && currentStyle && currentStyle.style
                   // Math.round until https://github.com/bvaughn/react-virtualized/issues/357
-                  ? Math.round(currentStyle.style.scrollTop)
+                  ? currentStyle.style.scrollTop
                   : scrollParams === undefined
                     ? 0
                     : scrollParams.scrollTop
               }
               lines={lines}
-              scrollParams={scrollParams}
               headers={headers}
-              onScroll={onScroll}
+              onScroll={isInAnim ? undefined : onScroll}
               lineFrom={lineFrom}
               lineTo={lineTo}
             />

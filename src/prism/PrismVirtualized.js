@@ -19,7 +19,6 @@ export const prismVirtualized = ({
   onScroll,
   rowRenderer,
   headers,
-  scrollParams,
   rowHeight,
 }) => (
   <div className={styles.main}>
@@ -29,7 +28,7 @@ export const prismVirtualized = ({
     >
       <FileHeaders
         headers={headers}
-        scrollParams={scrollParams}
+        scrollTop={scrollTop}
         rowHeight={rowHeight}
       />
       <PrismVirtualScroll
