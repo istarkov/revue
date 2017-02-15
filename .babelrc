@@ -1,6 +1,10 @@
 {
-  "presets": ["es2015", "react", "stage-0"],
+  "presets": ["latest", "react"],
   "plugins": [
-    "transform-runtime"
+    "add-module-exports",
+    "transform-flow-strip-types",
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    "transform-export-extensions"
   ]
 }

@@ -1,13 +1,16 @@
 export default {
   babelrc: false,
   presets: [
-    'babel-preset-es2015',
-    'babel-preset-es2016',
+    'babel-preset-latest',
     'babel-preset-react',
-    'babel-preset-stage-0',
   ].map(require.resolve),
 
   plugins: [
+    'babel-plugin-add-module-exports',
+    'babel-plugin-transform-flow-strip-types',
+    'babel-plugin-transform-object-rest-spread',
+    'babel-plugin-transform-class-properties',
+    'babel-plugin-transform-export-extensions',
   ].map(require.resolve)
   .concat([[
     require.resolve('babel-plugin-transform-runtime'),

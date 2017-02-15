@@ -1,15 +1,15 @@
 import React from 'react';
 import pure from 'recompose/pure';
-import { VirtualScroll } from 'react-virtualized';
+import { List } from 'react-virtualized';
 
 const SCROLL_BAR_MAX_WIDTH = 20;
 
 // the only idea of this control is to avoid any additional rerender
-// on VirtualScroll
+// on List
 export const prismVirtualScroll = ({
   scrollTop, onScroll, className, size, rowCount, rowHeight, rowRenderer,
 }) => (
-  <VirtualScroll
+  <List
     // overscanRowCount={1000}
     scrollTop={scrollTop}
     onScroll={onScroll}

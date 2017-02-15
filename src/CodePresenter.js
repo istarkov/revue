@@ -4,7 +4,7 @@ import renderComponent from 'recompose/renderComponent';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import withProps from 'recompose/withProps';
 import defaultProps from 'recompose/defaultProps';
-import withState from 'recompose/withState';
+// import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import branch from 'recompose/branch';
 import { TransitionMotion, spring } from 'react-motion';
@@ -20,7 +20,7 @@ export const codePresenter = ({
   lines, // combined lines of all files, see CodePresenterContainer for details
   headers, // headers pos and content, see CodePresenterContainer for details
   codeNotes, // to show Notes and Progress, see CodePresenterContainer for details
-  scrollParams, // scroll params from virtual-scroll
+  getScroll, // scroll params from virtual-scroll
   onScroll, // VirtualScroll onScroll callback
   lineFrom,
   lineTo,
@@ -42,14 +42,13 @@ export const codePresenter = ({
             <PrismVirtualized
               scrollTop={
                 currentStyle && currentStyle.style
-                  // Math.round until https://github.com/bvaughn/react-virtualized/issues/357
                   ? Math.round(currentStyle.style.scrollTop)
-                  : scrollParams === undefined
+                  : getScroll() === undefined
                     ? 0
-                    : scrollParams.scrollTop
+                    : getScroll().scrollTop
               }
               lines={lines}
-              scrollParams={scrollParams}
+              getScroll={getScroll}
               headers={headers}
               onScroll={onScroll}
               lineFrom={lineFrom}
@@ -90,15 +89,22 @@ export const codePresenterHOC = compose(
     renderComponent(() => <div style={{ margin: 'auto' }}>No Data</div>),
     (v) => v,
   ),
+  // withState('s', 'setS', {}),
   // scroll support
-  withState('scrollParams', 'setScrollParams', undefined),
-  withHandlers({
-    onScroll: ({ setScrollParams }) => (scroll) => {
-      setScrollParams(scroll);
-    },
+  withHandlers(() => {
+    let scrollParams = {};
+    // let cancelToken;
+    return {
+      onScroll: () => (scroll) => {
+        scrollParams = { ...scroll };
+        // clearTimeout(cancelToken);
+        // cancelToken = setTimeout(() => setS({}), 300);
+      },
+      getScroll: () => () => scrollParams,
+    };
   }),
-  withProps(({ rowHeight, lines, scrollParams: { clientHeight } = {} }) => ({
-    clientHeight,
+  withProps(({ rowHeight, lines }) => ({
+    // clientHeight,
     // scrollParams contains scrollHeight property but
     // onScroll does not called for example if lines length has changed
     // and as rowHeight is constant
@@ -159,15 +165,15 @@ export const codePresenterHOC = compose(
       return {
         transitionKey,
         transitionStyles,
-        scrollTop,
+        // scrollTop,
         lineFrom,
         lineTo,
       };
     }
   ),
   withHandlers({
-    transitionWillEnter: ({ scrollParams }) => () => ({
-      scrollTop: scrollParams.scrollTop,
+    transitionWillEnter: ({ getScroll }) => () => ({
+      scrollTop: getScroll().scrollTop,
     }),
   })
 );
