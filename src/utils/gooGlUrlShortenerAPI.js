@@ -63,7 +63,7 @@ export const saveAtUrlShortener = ({ text, maxLen = MAX_URL_LEN_GOOGL_ALLOWS }) 
       )
     )
     .map(({ response }) => response)
-    .map(({ id }) => id.replace('http://goo.gl/', ''))
+    .map(({ id }) => id.replace('http://goo.gl/', '').replace('https://goo.gl/', ''))
     .bufferCount(BIG_NUMBER)
     .map(ids => ids.join('-'));
 };
