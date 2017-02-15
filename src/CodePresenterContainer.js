@@ -56,6 +56,7 @@ const codePresenterContainer = ({
               {...{ lines, headers, codeNotes }}
               {...props}
               clientHeight={height}
+              size={{ width, height }}
             />
           </div>
         )

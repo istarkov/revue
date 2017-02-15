@@ -1,7 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 import compose from 'recompose/compose';
+import withProps from 'recompose/withProps';
 import defaultProps from 'recompose/defaultProps';
+import toClass from 'recompose/toClass';
 import withPropsOnChange from 'recompose/withPropsOnChange';
 import pure from 'recompose/pure';
 import mapProps from 'recompose/mapProps';
@@ -29,8 +31,10 @@ export const fileHeaders = ({ posStyle, styles, currentHeader }) => (
 export const fileHeadersHOC = compose(
   defaultProps({
     styles: fileHeadersStyles,
-    scrollParams: { scrollTop: 0 },
   }),
+  withProps(({ getScroll }) => ({
+    scrollParams: getScroll(),
+  })),
   withPropsOnChange(
     ['rowHeight', 'scrollParams', 'headers'],
     ({ rowHeight, scrollParams: { scrollTop }, headers }) => {
@@ -69,4 +73,4 @@ export const fileHeadersHOC = compose(
   pure
 );
 
-export default fileHeadersHOC(fileHeaders);
+export default toClass(fileHeadersHOC(fileHeaders));

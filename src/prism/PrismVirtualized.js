@@ -1,11 +1,8 @@
 import React from 'react';
 import compose from 'recompose/compose';
-import branch from 'recompose/branch';
 import withPropsOnChange from 'recompose/withPropsOnChange';
-import renderComponent from 'recompose/renderComponent';
 import defaultProps from 'recompose/defaultProps';
-import dimensions from '../HOCs/dimensions';
-
+import withHandlers from 'recompose/withHandlers';
 import PrismVirtualScroll from './PrismVirtualScroll';
 import PrismLine from './PrismLine';
 import FileHeaders from './FileHeaders';
@@ -21,6 +18,7 @@ export const prismVirtualized = ({
   headers,
   getScroll,
   rowHeight,
+  registerFileHeader,
 }) => (
   <div className={styles.main}>
     <pre
@@ -28,8 +26,9 @@ export const prismVirtualized = ({
       className={styles.pre}
     >
       <FileHeaders
+        ref={registerFileHeader}
         headers={headers}
-        scrollParams={getScroll()}
+        getScroll={getScroll}
         rowHeight={rowHeight}
       />
       <PrismVirtualScroll
@@ -54,12 +53,21 @@ export const prismVirtualizedHOC = compose(
     onScroll: () => {},
     cache: new Map(),
   }),
-  dimensions('size', { width: 0, height: 0 }),
-  branch(
-    ({ size: { width, height } }) => width === 0 || height === 0,
-    renderComponent(({ styles }) => <pre className={styles.main}></pre>),
-    (x) => x
-  ),
+  withHandlers(() => {
+    let fileHeadersRef;
+
+    return {
+      onScroll: ({ onScroll }) => scroll => {
+        onScroll(scroll);
+        if (fileHeadersRef) {
+          fileHeadersRef.forceUpdate();
+        }
+      },
+      registerFileHeader: () => (ref) => {
+        fileHeadersRef = ref;
+      },
+    };
+  }),
   withPropsOnChange(
     ['lines', 'colorSchema', 'lineFrom', 'lineTo', 'cache'],
     ({ lines, colorSchema, lineFrom, lineTo, cache }) => ({

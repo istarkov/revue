@@ -29,6 +29,7 @@ export const codePresenter = ({
   transitionWillEnter,
   page,
   onPageChange,
+  size,
 }) => (
   <div className={styles.main}>
     <TransitionMotion
@@ -41,11 +42,7 @@ export const codePresenter = ({
           return (
             <PrismVirtualized
               scrollTop={
-                currentStyle && currentStyle.style
-                  ? Math.round(currentStyle.style.scrollTop)
-                  : getScroll() === undefined
-                    ? 0
-                    : getScroll().scrollTop
+                currentStyle && currentStyle.style && Math.round(currentStyle.style.scrollTop)
               }
               lines={lines}
               getScroll={getScroll}
@@ -53,6 +50,7 @@ export const codePresenter = ({
               onScroll={onScroll}
               lineFrom={lineFrom}
               lineTo={lineTo}
+              size={size}
             />
           );
         }
