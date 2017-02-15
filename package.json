@@ -81,7 +81,7 @@
     "react-dom": "^15.4.2",
     "react-motion": "^0.4.7",
     "react-router": "^2.7.0",
-    "react-virtualized": "^8.11.4",
+    "react-virtualized": "next",
     "recompose": "^0.22.0",
     "rxjs": "^5.1.1",
     "slate": "^0.10.8",
