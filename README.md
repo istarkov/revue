@@ -31,16 +31,16 @@ and provide a PR.
 # Install
 
 ```bash
-npm install
+yarn install
 # dev version
-PORT=3000 npm run start
+PORT=3000 yarn run start
 # open browser at localhost:3000
 # dev version but with NODE_ENV=production
-PORT=3000 npm run start:prod
+PORT=3000 yarn run start:prod
 # ---------------------------------------
 # production version build and server
-npm run build
-PORT=3000 npm run start:server
+yarn run build
+PORT=3000 yarn run start:server
 ```
 
 # How to use with private repos
@@ -54,7 +54,7 @@ with `GITHUB_USER_AUTH_TOKEN` env variable defined as `${USERNAME}:${TOKEN}`.
 Example
 
 ```shell
-GITHUB_USER_AUTH_TOKEN='vasyapupkin:e3150a4dca108b' PORT=3000 npm run start:prod
+GITHUB_USER_AUTH_TOKEN='vasyapupkin:e3150a4dca108b' PORT=3000 yarn run start:prod
 ```
 
 One problem you could get with this solution,
