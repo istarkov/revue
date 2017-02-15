@@ -32,7 +32,7 @@ export const fileLoader = (fetch, sourcePropGetter, mergePropsWithFetchResults) 
                 [fileKey]: r[fileKey] // reusing cached observables
                   ? r[fileKey]
                   : fetch(file, index)
-                    .cache(1), // only last value is acceptable
+                    .publishReplay().refCount(), // only last value is acceptable
               }),
               {}
             ),

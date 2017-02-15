@@ -9,6 +9,7 @@ import fetchAndTokenize from './utils/fetchAndTokenize';
 import parseCodeNotes from './utils/parseCodeNotes';
 import fileLoader from './HOCs/fileLoader';
 import CodePresenter from './CodePresenter';
+import { AutoSizer } from 'react-virtualized';
 
 import type { TokensLine } from './prism/utils/tokenize';
 
@@ -46,10 +47,22 @@ const codePresenterContainer = ({
   codeNotes,
   ...props,
 }: InputProps) => (
-  <CodePresenter
-    {...{ lines, headers, codeNotes }}
-    {...props}
-  />
+  <AutoSizer>
+    {
+      ({ height, width }) => (
+        height > 0 && (
+          <div style={{ height, width, display: 'flex' }}>
+            <CodePresenter
+              {...{ lines, headers, codeNotes }}
+              {...props}
+              clientHeight={height}
+              size={{ width, height }}
+            />
+          </div>
+        )
+      )
+    }
+  </AutoSizer>
 );
 
 const codePresenterContainerHOC = compose(
